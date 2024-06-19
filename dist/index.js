@@ -59634,7 +59634,7 @@ async function run() {
 
         let plugins = [];
         if (rulesFileLocation) {
-            plugins = await common.helper.processLineByLine(`${workspace}/${rulesFileLocation}`);
+            plugins = await common.helper.processLineByLine(`${rulesFileLocation}`);
         }
 
         // Allow writing files from the Docker container.
