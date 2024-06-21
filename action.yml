@@ -14,6 +14,9 @@ inputs:
   rules_file_name:
     description: 'Relative path of the ZAP configuration file'
     required: false
+  rules_file_contents:
+    description: "Contents of the rules file"
+    required: false
   docker_name:
     description: 'The Docker file to be executed'
     required: true
