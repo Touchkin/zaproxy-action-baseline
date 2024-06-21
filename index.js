@@ -18,7 +18,6 @@ async function run() {
         let docker_name = core.getInput('docker_name');
         let target = core.getInput('target');
         let rulesFileLocation = core.getInput('rules_file_name');
-        let rulesFileContent = core.getInput('rules_file_contents');
         let cmdOptions = core.getInput('cmd_options');
         let issueTitle = core.getInput('issue_title');
         let failAction = core.getInput('fail_action');
@@ -44,7 +43,7 @@ async function run() {
 
         let plugins = [];
         if (rulesFileLocation) {
-            plugins = await common.helper.processLineByLine(`/zap/wrk/${rulesFileLocation}`);
+            plugins = await common.helper.processLineByLine(`/zap/wrk${rulesFileLocation}`);
         }
 
         // Allow writing files from the Docker container.
@@ -55,11 +54,13 @@ async function run() {
             `-t ${docker_name} zap-baseline.py -t ${target} -J ${jsonReportName} -w ${mdReportName}  -r ${htmlReportName} ${cmdOptions}`);
 
         if (plugins.length !== 0) {
-            command = command + ` -c ${rulesFileLocation}`
+            command = command + ` -c /zap/wrk${rulesFileLocation}`
         }
 
         try {
             await exec.exec(command);
+            await exec.exec("docker ps -a")
+            await exec.exec("pwd")
         } catch (err) {
             if (err.toString().includes('exit code 3')) {
                 core.setFailed('failed to scan the target: ' + err.toString());
