@@ -59641,6 +59641,7 @@ async function run() {
         await exec.exec(`chmod a+w ${workspace}`);
 
         await exec.exec(`docker pull ${docker_name} -q`);
+        let lsCommand = `docker run -v ${workspace}:/zap/wrk/:rw --network="host" -t ${docker_name} ls /zap/wrk`;
         let command = (`docker run -v ${workspace}:/zap/wrk/:rw --network="host" -e ZAP_AUTH_HEADER -e ZAP_AUTH_HEADER_VALUE -e ZAP_AUTH_HEADER_SITE ` +
             `-t ${docker_name} zap-baseline.py -t ${target} -J ${jsonReportName} -w ${mdReportName}  -r ${htmlReportName} ${cmdOptions}`);
 
@@ -59650,6 +59651,7 @@ async function run() {
 
         try {
             await exec.exec("pwd")
+            await exec.exec(lsCommand);
             await exec.exec(command);
             await exec.exec("docker ps -a")
         } catch (err) {
