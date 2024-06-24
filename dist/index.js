@@ -59640,9 +59640,12 @@ async function run() {
         // Allow writing files from the Docker container.
         await exec.exec(`chmod a+w ${workspace}`);
 
+        await exec.exec(`chmod a+r ${workspace}/vapt-config/rules.tsv`);
+
         await exec.exec(`docker pull ${docker_name} -q`);
         let lsCommand = `docker run -v ${workspace}:/zap/wrk/:rw --network="host" -t ${docker_name} ls /zap/wrk`;
         let lsVaptConfigCommand = `docker run -v ${workspace}:/zap/wrk/:rw --network="host" -t ${docker_name} ls /zap/wrk/vapt-config`;
+        let catRulesFileCommand = `docker run -v ${workspace}:/zap/wrk/:rw --network="host" -t ${docker_name} cat /zap/wrk/vapt-config/rules.tsv`;
         let command = (`docker run -v ${workspace}:/zap/wrk/:rw --network="host" -e ZAP_AUTH_HEADER -e ZAP_AUTH_HEADER_VALUE -e ZAP_AUTH_HEADER_SITE ` +
             `-t ${docker_name} zap-baseline.py -t ${target} -J ${jsonReportName} -w ${mdReportName}  -r ${htmlReportName} ${cmdOptions}`);
 
@@ -59652,8 +59655,9 @@ async function run() {
 
         try {
             await exec.exec("pwd")
-            await exec.exec(lsCommand);
-            await exec.exec(lsVaptConfigCommand);
+            // await exec.exec(lsCommand);
+            // await exec.exec(lsVaptConfigCommand);
+            await exec.exec(catRulesFileCommand);
             await exec.exec(command);
             await exec.exec("docker ps -a")
         } catch (err) {
