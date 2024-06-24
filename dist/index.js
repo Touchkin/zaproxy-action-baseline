@@ -59634,7 +59634,7 @@ async function run() {
 
         let plugins = [];
         if (rulesFileLocation) {
-            plugins = await common.helper.processLineByLine(`${rulesFileLocation}`);
+            plugins = await common.helper.processLineByLine(`/zap/wrk/${rulesFileLocation}`);
         }
 
         // Allow writing files from the Docker container.
@@ -59649,9 +59649,9 @@ async function run() {
         }
 
         try {
+            await exec.exec("pwd")
             await exec.exec(command);
             await exec.exec("docker ps -a")
-            await exec.exec("pwd")
         } catch (err) {
             if (err.toString().includes('exit code 3')) {
                 core.setFailed('failed to scan the target: ' + err.toString());
