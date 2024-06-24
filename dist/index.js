@@ -9240,6 +9240,7 @@
                   crlfDelay: Infinity,
               });
               for await (const line of rl) {
+                  console.log(line);
                   if (!line.startsWith("#")) {
                       const tmp = line.split("\t");
                       if (tmp[0].trim() !== "" &&
