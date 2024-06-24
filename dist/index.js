@@ -59634,7 +59634,7 @@ async function run() {
 
         let plugins = [];
         if (rulesFileLocation) {
-            plugins = await common.helper.processLineByLine(`/zap/wrk/${rulesFileLocation}`);
+            plugins = await common.helper.processLineByLine(`/zap/wrk${rulesFileLocation}`);
         }
 
         // Allow writing files from the Docker container.
@@ -59645,7 +59645,7 @@ async function run() {
             `-t ${docker_name} zap-baseline.py -t ${target} -J ${jsonReportName} -w ${mdReportName}  -r ${htmlReportName} ${cmdOptions}`);
 
         if (plugins.length !== 0) {
-            command = command + ` -c /zap/wrk/${rulesFileLocation}`
+            command = command + ` -c /zap/wrk${rulesFileLocation}`
         }
 
         try {
