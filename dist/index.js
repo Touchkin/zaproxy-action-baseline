@@ -59645,11 +59645,13 @@ async function run() {
             `-t ${docker_name} zap-baseline.py -t ${target} -J ${jsonReportName} -w ${mdReportName}  -r ${htmlReportName} ${cmdOptions}`);
 
         if (plugins.length !== 0) {
-            command = command + ` -c ${rulesFileLocation}`
+            command = command + ` -c /zap/wrk/${rulesFileLocation}`
         }
 
         try {
             await exec.exec(command);
+            await exec.exec("docker ps -a")
+            await exec.exec("pwd")
         } catch (err) {
             if (err.toString().includes('exit code 3')) {
                 core.setFailed('failed to scan the target: ' + err.toString());
