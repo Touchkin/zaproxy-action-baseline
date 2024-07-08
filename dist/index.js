@@ -59642,7 +59642,7 @@ async function run() {
 
         await exec.exec(`docker pull ${docker_name} -q`);
         let command = (`docker run -v ${workspace}:/zap/wrk/:rw --network="host" -e ZAP_AUTH_HEADER -e ZAP_AUTH_HEADER_VALUE -e ZAP_AUTH_HEADER_SITE ` +
-            `-t ${docker_name} zap-baseline.py -t ${target} -J ${jsonReportName} -w ${mdReportName}  -r ${htmlReportName} ${cmdOptions}`);
+            `-t ${docker_name} zap-baseline.py -t ${target} -J ${jsonReportName} -w ${mdReportName}  -r ${htmlReportName} ${cmdOptions} --label app=zap-baseline`);
 
         if (plugins.length !== 0) {
             command = command + ` -c ${rulesFileLocation}`
